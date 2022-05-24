@@ -1,54 +1,36 @@
-# sendover
+# pushdrop
 
-Tools for creating and paying invoices privately on Bitcoin SV
+A package for creating and redeeming Bitcoin tokens with arbitrary signed payloads stored on the stack
 
-The code is hosted [on GitHub](https://github.com/p2ppsr/sendover) and the package is available [through NPM](https://www.npmjs.com/package/sendover).
+The code is hosted [on GitHub](https://github.com/p2ppsr/pushdrop) and the package is available [through NPM](https://www.npmjs.com/package/pushdrop).
 
 ## Installation
 
-    npm i sendover
+    npm i pushdrop
 
 ## Example Usage
 
 ```js
-const sendover = require('sendover')
+const pushdrop = require('pushdrop')
 
-// The merchant generates a keypair.
-// They put the public key on their website, and keep the private key secret.
-const merchantKeypair = sendover.generateKeypair()
+const token_payload = [
+  Buffer.from(...),
+  Buffer.from(...),
+  Buffer.from(...),
+  ...
+]
 
-// The customer also generates a keypair.
-const customerKeypair = sendover.generateKeypair()
-
-// The customer and the merchant agree on an invoice number.
-// The customer knows the invoice number.
-const purchaseInvoiceNumber = '341-9945319'
-
-// The customer can now generate a Bitcoin addres for the payment.
-// After generating the address, the customer sends the payment.
-const paymentAddress = sendover.getPaymentAddress({
-  senderPrivateKey: customerKeypair.privateKey,
-  recipientPublicKey: merchantKeypair.publicKey,
-  invoiceNumber: purchaseInvoiceNumber
+const pushdrop_script = pushdrop.create({
+  fields: token_payload,
+  key: bsv.PrivateKey.fromHex(key)
 })
 
-// After making the payment, the customer sends a few things to the merchant.
-// - The Bitcoin transaction that contains the payment
-// - The invoice number they have agreed upon
-// - The customer's public key
-// - Any SPV proofs needed for the merchant to validate and accept the transaction
-const dataSentToMerchant = {
-  customerPublicKey: customerKeypair.publicKey,
-  paymentTransaction: '...', // transaction that pays money to the address
-  invoiceNumber: purchaseInvoiceNumber,
-  transactionSPVProofs: ['...'] // Any needed SPV proofs
-}
-
-// The merchant can now calculate the private key that unlocks the money.
-const privateKey = sendover.getPaymentPrivateKey({
-  senderPublicKey: dataSentToMerchant.customerPublicKey,
-  recipientPrivateKey: merchantKeypair.privateKey,
-  invoiceNumber: dataSentToMerchant.invoiceNumber
+const unlocking_script = getP2PKUnlockingScript({
+  prevTxId: txid,
+  outputIndex: 0,
+  outputAmount: amount,
+  key: bsv.PrivateKey.fromHex(key),
+  lockingScript: script.toHex()
 })
 ```
 
@@ -58,59 +40,22 @@ const privateKey = sendover.getPaymentPrivateKey({
 
 #### Table of Contents
 
-*   [generateKeypair](#generatekeypair)
+*   [buildPushDropScript](#buildpushdropscript)
     *   [Parameters](#parameters)
-*   [getPaymentAddress](#getpaymentaddress)
-    *   [Parameters](#parameters-1)
-*   [getPaymentPrivateKey](#getpaymentprivatekey)
-    *   [Parameters](#parameters-2)
 
-### generateKeypair
+### buildPushDropScript
 
-Generates a public/private keypair for the sending and receiving of invoices.
+Creates a script that pays to a public key and includes "PUSH DROP" data signed with the corresponding private key
 
 #### Parameters
 
-*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object (optional, default `{}`)
+*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object
 
-    *   `obj.returnType` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Return type, either "hex" or "bsv" (optional, default `'hex'`)
+    *   `obj.fields` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** The fields to push and drop
+    *   `obj.key` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The bsv1 private key that will create the P2PKH script and the signature over the fields
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The generated keypair, with `privateKey` and `publicKey` properties.
-
-### getPaymentAddress
-
-Returns a payment address for use by the sender, given the recipient's public key, the sender's private key and the invoice number.
-
-#### Parameters
-
-*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parametera ere provided in an object
-
-    *   `obj.senderPrivateKey` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The private key of the sender in WIF format
-    *   `obj.recipientPublicKey` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The public key of the recipient in hexadecimal DER format
-    *   `obj.invoiceNumber` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The invoice number to use
-    *   `obj.returnType` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The destination key return type, either `address` or `publicKey` (optional, default `address`)
-
-Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The destination address or public key
-
-### getPaymentPrivateKey
-
-Returns a private key for use by the recipient, given the sender's public key, the recipient's private key and the invoice number.
-
-#### Parameters
-
-*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parametera ere provided in an object
-
-    *   `obj.recipientPrivateKey` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The private key of the recipient in WIF format
-    *   `obj.senderPublicKey` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The public key of the sender in hexadecimal DER format
-    *   `obj.invoiceNumber` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The invoice number that was used
-    *   `obj.returnType` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The incoming payment key return type, either `wif` or `hex` (optional, default `wif`)
-
-Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The incoming payment key that can unlock the money.
-
-## Credits
-
-Credit is given to the people who have worked on making these ideas into reality. In particular, we thank Xiaohui Liu for creating the [first known implementation](https://gist.github.com/xhliu/9e267e23dd7c799039befda3ae6fa244) of private addresses using this scheme, and Dr. Craig Wright for first [describing it](https://craigwright.net/blog/bitcoin-blockchain-tech/offline-addressing).
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
 
 ## License
 
-The license for the code in this repository is the Open BSV License.
+This code is licensed under the [Open BSV License](https://bitcoinassociation.net/open-bitcoinsv-license/).

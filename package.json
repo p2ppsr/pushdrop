@@ -1,7 +1,7 @@
 {
-  "name": "sendover",
-  "version": "1.1.1",
-  "description": "Tools for creating and paying invoices privately on Bitcoin SV",
+  "name": "pushdrop",
+  "version": "1.0",
+  "description": "A package for creating and redeeming Bitcoin tokens with arbitrary signed payloads stored on the stack",
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
@@ -11,27 +11,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/p2ppsr/sendover.git"
+    "url": "git+https://github.com/p2ppsr/pushdrop.git"
   },
   "keywords": [
-    "Bitcoin",
     "BSV",
-    "invoice",
-    "private",
-    "address"
+    "token"
   ],
   "author": "Peer-to-peer Privacy Systems Research LLC",
   "license": "Open BSV License",
   "bugs": {
-    "url": "https://github.com/p2ppsr/sendover/issues"
+    "url": "https://github.com/p2ppsr/pushdrop/issues"
   },
-  "homepage": "https://github.com/p2ppsr/sendover#readme",
+  "homepage": "https://github.com/p2ppsr/pushdrop#readme",
+  "dependencies": {
+    "bsv": "^1.5.5"
+  },
   "devDependencies": {
     "documentation": "^13.2.5",
     "jest": "^26.6.3",
     "standard": "^16.0.3"
-  },
-  "dependencies": {
-    "bsv": "^1.5.5"
   }
 }

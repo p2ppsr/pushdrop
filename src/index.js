@@ -1,5 +1,4 @@
 module.exports = {
-  generateKeypair: require('./generateKeypair'),
-  getPaymentAddress: require('./getPaymentAddress'),
-  getPaymentPrivateKey: require('./getPaymentPrivateKey')
+  create: require('./buildPushDropScript'),
+  redeem: require('./getP2PKUnlockingScript')
 }
