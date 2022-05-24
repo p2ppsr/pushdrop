@@ -25,7 +25,7 @@ const pushdrop_script = pushdrop.create({
   key: bsv.PrivateKey.fromHex(key)
 })
 
-const unlocking_script = getP2PKUnlockingScript({
+const unlocking_script = pushdrop.redeem({
   prevTxId: txid,
   outputIndex: 0,
   outputAmount: amount,
