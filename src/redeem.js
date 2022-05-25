@@ -1,5 +1,18 @@
 const bsv = require('bsv')
 
+/**
+ * Redeems a transaction
+ * 
+ * @param {Object} obj All parameters are given in an object
+ * @param {*} obj.prevTxId The ID of the transaction to redeem
+ * @param {*} obj.outputIndex The index of the transaction output to redeem
+ * @param {*} obj.lockingScript The locking script
+ * @param {*} obj.outputAmount The amount to redeem?
+ * @param {*} obj.key The key?
+ * @param {*} obj.signSingleOutput ?
+ * @param {*} obj.inputIndex ?
+ * @returns {*} 
+ */
 module.exports = ({
   prevTxId,
   outputIndex,

@@ -40,10 +40,12 @@ const unlocking_script = pushdrop.redeem({
 
 #### Table of Contents
 
-*   [buildPushDropScript](#buildpushdropscript)
+*   [create](#create)
     *   [Parameters](#parameters)
+*   [redeem](#redeem)
+    *   [Parameters](#parameters-1)
 
-### buildPushDropScript
+### create
 
 Creates a script that pays to a public key and includes "PUSH DROP" data signed with the corresponding private key
 
@@ -55,6 +57,24 @@ Creates a script that pays to a public key and includes "PUSH DROP" data signed 
     *   `obj.key` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The bsv1 private key that will create the P2PKH script and the signature over the fields
 
 Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
+
+### redeem
+
+Redeems a transaction
+
+#### Parameters
+
+*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object
+
+    *   `obj.prevTxId` **any** The ID of the transaction to redeem
+    *   `obj.outputIndex` **any** The index of the transaction output to redeem
+    *   `obj.lockingScript` **any** The locking script
+    *   `obj.outputAmount` **any** The amount to redeem?
+    *   `obj.key` **any** The key?
+    *   `obj.signSingleOutput` **any** ?
+    *   `obj.inputIndex` **any** ? (optional, default `0`)
+
+Returns **any** 
 
 ## License
 
