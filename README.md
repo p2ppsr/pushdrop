@@ -60,22 +60,25 @@ Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ### redeem
 
-Redeems a transaction
+Redeems a PushDrop transaction output
 
 #### Parameters
 
 *   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object
 
-    *   `obj.prevTxId` **any** The ID of the transaction to redeem
-    *   `obj.outputIndex` **any** The index of the transaction output to redeem
-    *   `obj.lockingScript` **any** The locking script
-    *   `obj.outputAmount` **any** The amount to redeem?
-    *   `obj.key` **any** The key?
-    *   `obj.signSingleOutput` **any** ?
-    *   `obj.inputIndex` **any** ? (optional, default `0`)
+    *   `obj.prevTxId` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The ID of the transaction to redeem
+    *   `obj.outputIndex` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** The index of the transaction output to redeem
+    *   `obj.lockingScript` **bsv.Script** The locking script of the output to redeem
+    *   `obj.outputAmount` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Number of satoshis in the PushDrop UTXO
+    *   `obj.key` **bsv.PrivateKey** Private key used to lock the PushDrop UTXO
+    *   `obj.signSingleOutput` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** If provided, uses SIGHASH_SINGLE instead of SIGHASH_NOE. The input index must be the same as the output index o this output in the transaction.
 
-Returns **any** 
+        *   `obj.signSingleOutput.satoshis` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)?** Number of satoshis in the single output to sign
+        *   `obj.signSingleOutput.script` **bsv.Script?** Output script of the single output to sign (this COULD be a PushDrop script created with `pushdrop.create`)
+    *   `obj.inputIndex` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** The input in the spending transaction that will unlock the PushDrop UTXO (optional, default `0`)
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Unlocking script that spends the PushDrop UTXO
 
 ## License
 
-This code is licensed under the [Open BSV License](https://bitcoinassociation.net/open-bitcoinsv-license/).
+The license for the code in this repository is the Open BSV License.
