@@ -1,5 +1,5 @@
 /* eslint-env jest */
-const buildPushDropScript = require('../buildPushDropScript')
+const create = require('../create')
 const bsv = require('bsv')
 
 const someRandomKeypair = {
@@ -8,9 +8,9 @@ const someRandomKeypair = {
     .fromWIF('5K4Wq578LC4nYd7oxnzxBcimtQguWJzV7W93UgcDKNL4C3vL5zu')
 }
 
-describe('buildPushDropScript', () => {
+describe('create', () => {
   it('Returns the correct script that passes extra checks', () => {
-    const result = buildPushDropScript({
+    const result = create({
       fields: [
         Buffer.from('deadbeef2020', 'hex'),
         'hello world',
