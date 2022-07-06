@@ -1,4 +1,5 @@
 const bsv = require('bsv')
+const minimalEncoding = require('./utils/minimalEncoding')
 
 const OP_DROP = '75'
 const OP_2DROP = '6d'
@@ -29,8 +30,10 @@ module.exports = ({ fields, key }) => {
     ...fields,
     signature
   ]
-  const pushPart = bsv.Script.buildSafeDataOut(fieldsWithSig)
-    .toHex().substring(4)
+  const pushPart = fieldsWithSig.reduce(
+    (acc, el) => acc + minimalEncoding(el),
+    ''
+  )
   let dropPart = ''
   let undropped = fieldsWithSig.length
   while (undropped > 1) {
