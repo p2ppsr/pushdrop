@@ -53,8 +53,9 @@ Creates a script that pays to a public key and includes "PUSH DROP" data signed 
 
 *   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object
 
-    *   `obj.fields` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** The fields to push and drop
-    *   `obj.key` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The bsv1 private key that will create the P2PKH script and the signature over the fields
+    *   `obj.fields` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<([Buffer](https://nodejs.org/api/buffer.html) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>** The token payload fields to push and drop. Each field is given as a Buffer, or a utf8 string.
+    *   `obj.key` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | PrivateKey)** The private key that will sign the token payload. Given in WIF or an instance of bsv1 PrivateKey.
+    *   `obj.ownerKey` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | PublicKey)?** The owner's public key, whose private key can unlock the token using the `redeem` function. If not provided, the signing key will be used. Given in DER (33- or 65-byte hex), or an instance of bsv1 PublicKey.
 
 Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
 
@@ -71,7 +72,7 @@ Redeems a PushDrop transaction output
     *   `obj.lockingScript` **bsv.Script** The locking script of the output to redeem
     *   `obj.outputAmount` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Number of satoshis in the PushDrop UTXO
     *   `obj.key` **bsv.PrivateKey** Private key used to lock the PushDrop UTXO
-    *   `obj.signSingleOutput` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** If provided, uses SIGHASH_SINGLE instead of SIGHASH_NOE. The input index must be the same as the output index o this output in the transaction.
+    *   `obj.signSingleOutput` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** If provided, uses SIGHASH_SINGLE instead of SIGHASH_NONE. The input index must be the same as the output index o this output in the transaction.
 
         *   `obj.signSingleOutput.satoshis` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)?** Number of satoshis in the single output to sign
         *   `obj.signSingleOutput.script` **bsv.Script?** Output script of the single output to sign (this COULD be a PushDrop script created with `pushdrop.create`)

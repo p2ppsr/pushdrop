@@ -2,6 +2,7 @@
  * Given a Buffer as an input, returns a minimally-encoded version as a hex string, plus any pushdata that may be required.
  * @param buf - NodeJS Buffer containing an intended Bitcoin script stack element
  * @return {String} Minimally-encoded version, plus the correct opcodes required to push it with minimal encoding, if any, in hex string format.
+ * @private
  */
 module.exports = buf => {
   if (!(buf instanceof Buffer)) {

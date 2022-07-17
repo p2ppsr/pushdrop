@@ -9,7 +9,7 @@ const bsv = require('bsv')
  * @param {bsv.Script} obj.lockingScript The locking script of the output to redeem
  * @param {Number} obj.outputAmount Number of satoshis in the PushDrop UTXO
  * @param {bsv.PrivateKey} obj.key Private key used to lock the PushDrop UTXO
- * @param {Object} [obj.signSingleOutput] If provided, uses SIGHASH_SINGLE instead of SIGHASH_NOE. The input index must be the same as the output index o this output in the transaction.
+ * @param {Object} [obj.signSingleOutput] If provided, uses SIGHASH_SINGLE instead of SIGHASH_NONE. The input index must be the same as the output index o this output in the transaction.
  * @param {Number} [obj.signSingleOutput.satoshis] Number of satoshis in the single output to sign
  * @param {bsv.Script} [obj.signSingleOutput.script] Output script of the single output to sign (this COULD be a PushDrop script created with `pushdrop.create`)
  * @param {Number} obj.inputIndex The input in the spending transaction that will unlock the PushDrop UTXO
