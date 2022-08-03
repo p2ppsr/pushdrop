@@ -10,11 +10,15 @@ module.exports = buf => {
   }
   if (buf.byteLength === 0) {
     // Could have used OP_0.
-    return '51'
+    return '00'
   }
-  if (buf.byteLength === 1 && buf[0] >= 0 && buf[0] <= 16) {
+  if (buf.byteLength === 1 && buf[0] === 0) {
+    // Could have used OP_0.
+    return '00'
+  }
+  if (buf.byteLength === 1 && buf[0] > 0 && buf[0] <= 16) {
     // Could have used OP_0 .. OP_16.
-    return `${(0x51 + (buf[0])).toString(16)}`
+    return `${(0x50 + (buf[0])).toString(16)}`
   }
   if (buf.byteLength === 1 && buf[0] === 0x81) {
     // Could have used OP_1NEGATE.
