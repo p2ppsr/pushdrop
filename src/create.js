@@ -16,7 +16,7 @@ const OP_2DROP = '6d'
  *
  * @returns {String} A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
  */
-module.exports = async ({ fields, key, ownerKey }) => {
+module.exports = async ({ fields, key, ownerKey, protocolID, keyID, counterparty }) => {
   if (key) {
     if (typeof key === 'string') {
       key = bsv.PrivateKey.fromWIF(key)
@@ -27,7 +27,9 @@ module.exports = async ({ fields, key, ownerKey }) => {
   }
   if (!ownerKey) {
     ownerKey = bsv.PublicKey.fromString((await BabbageSDK.getPublicKey({
-      counterparty: 'self'
+      protocolID,
+      keyID,
+      counterparty
       // identityKey: true // Not the identity key, right?
     })).result) // TODO: Remove .result after SDK refactor!
   }
@@ -41,12 +43,11 @@ module.exports = async ({ fields, key, ownerKey }) => {
   }))
   let signature
   if (!key) {
-    const requestNonce = crypto.randomBytes(32).toString('base64')
     signature = await BabbageSDK.createSignature({
       data: Buffer.from(dataToSign),
-      protocolID: [1, 'pushdrop signature'],
-      keyID: `${requestNonce}`, // what is the keyID?
-      counterparty: ownerKey
+      protocolID,
+      keyID,
+      counterparty
     })
   } else {
     signature = bsv.crypto.ECDSA.sign(
