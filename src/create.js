@@ -12,6 +12,11 @@ const OP_2DROP = '6d'
  * @param {Array<Buffer|string>} obj.fields The token payload fields to push and drop. Each field is given as a Buffer, or a utf8 string.
  * @param {string|PrivateKey} obj.key The private key that will sign the token payload. Given in WIF or an instance of bsv PrivateKey. If no key is provided, the BabbageSDK will be used as a signing strategy.
  * @param {string|PublicKey} [obj.ownerKey] The owner's public key, whose private key can unlock the token using the `redeem` function. If not provided, the signing key will be used. Given in DER (33- or 65-byte hex), or an instance of bsv1 PublicKey. If no signing private key is provided, the BabbageSDK will be used to derive the ownerKey.
+ * @param {string} args.protocolID Specify an identifier for the protocol under which this operation is being performed.
+ * @param {string} args.keyID An identifier for the message being signed. During verification, or when retrieving the public key used, the same message ID will be required. This can be used to prevent key re-use, even when the same user is using the same protocol to sign multiple messages.
+ * @param {string} [args.description] Describe the high-level operation being performed, so that the user can make an informed decision if permission is needed.
+ * @param {string} [args.counterparty=self] If specified, the user with this identity key will also be able to verify the signature, as long as they specify the current user's identity key as their counterparty. Must be a hexadecimal string representing a 33-byte or 65-byte value, "self" or "anyone".
+ * @param {string} [args.privileged=false] This indicates whether the privileged keyring should be used for signing, as opposed to the primary keyring.
  *
  * @returns {String} A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
  */
