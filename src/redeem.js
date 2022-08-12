@@ -65,7 +65,7 @@ module.exports = async ({
       bsv.crypto.Signature.SIGHASH_ANYONECANPAY
   }
   if (!key) {
-    const hashbuf = bsv.Transaction.sighashPreimage(
+    const hashbuf = bsv.Transaction.sighash.sighashPreimage(
       tx,
       sighashType,
       inputIndex,
@@ -79,9 +79,8 @@ module.exports = async ({
       description,
       counterparty,
       privileged
-    }).set({
-      nhashtype: sighashType
     })
+    signature.nhashtype = sighashType
   } else {
     signature = bsv.Transaction.Sighash.sign(
       tx,
