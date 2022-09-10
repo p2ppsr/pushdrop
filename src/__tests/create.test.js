@@ -1,6 +1,6 @@
 /* eslint-env jest */
 const create = require('../create')
-const bsv = require('bsv')
+const bsv = require('babbage-bsv')
 
 const someRandomKeypair = {
   address: '14QaGZW4fG9dfvx3JGj9pwcdzNSqWEYhTi',
@@ -9,8 +9,8 @@ const someRandomKeypair = {
 }
 
 describe('create', () => {
-  it('Returns the correct script that passes extra checks', () => {
-    const result = create({
+  it('Returns the correct script that passes extra checks', async () => {
+    const result = await create({
       fields: [
         Buffer.from('deadbeef2020', 'hex'),
         'hello world',
@@ -39,8 +39,8 @@ describe('create', () => {
     const publicKey = resultScript.chunks[0].buf
     expect(someRandomKeypair.key.publicKey.toBuffer()).toEqual(publicKey)
   })
-  it('Works with minimally-encoded data', () => {
-    const result = create({
+  it('Works with minimally-encoded data', async () => {
+    const result = await create({
       fields: [
         Buffer.from('deadbeef2020', 'hex'),
         'hello world',
@@ -61,8 +61,8 @@ describe('create', () => {
       '4104c9d0ddc86380f42c2126e1b71d1006495a1d952189e42b65b087c98286d14182c27b3dba5feb2bce841aef8d88295e6bf5a0be36734874ec72fac4161c021c31ac06deadbeef20200b68656c6c6f20776f726c640f546869732069732061206669656c641c6865726520636f6d6573206669656c64206e756d62657220666f7572136669656c6420352069732061206275666665720051525f604f06deadbeef202246304402204c591eedb0fa6c228482a29872ec09a9279c10cfa3d1c28f186366d8c7996c4a0220225c70ec8bb934db1a42b3852736288eea1930bf0266d9c9ea0f7bf27ad43e6f6d6d6d6d6d6d75'
     )
   })
-  it('Works with data larger than 256 bytes data', () => {
-    const result = create({
+  it('Works with data larger than 256 bytes data', async () => {
+    const result = await create({
       fields: [
         'So, let me tell you a story. The only requirement of the story is that it is larger than 256 bytes, so it is completely meaningless and you should totally just ignore it and not read any further. Like seriously, stop reading. There is literally no reason for what you are doing right now. How has it come to pass that literally, out of all the things you could be doing in your life, the one thing that appeals to you the MOST is to be reading some random story in some test suite for a random NPM package about pushing and then immediately dropping values from a stack in Bitcoin? Like, what a waste of time. Just iagine how the guy writing this must feel, after writing all of this and then realizing he could have just copy and pasted the same "test" phrase over and over. But no — he decided to write a big long story yelling at people for reading his big long story instead. Why? Because out of all the things he could be doing in his life, the one thing that appeals to him the MOST is to be writing some random story in some random test suite for a random NPM package about pushing and then immediately dropping values from a stack in Bitcoin. Yay. But since you read it to the end like me, the guy who wrote it till the end, I am actually going to give you some life advice. Don\'t listen to crazy people who tell you to stop reading stories that you are enjoying. Curiosity in such times is important. Curiosity defeats nihilism, and cool stories give life its meaning. Even if they happen to be in a silly test suite for—if I do say so myself—a pretty damn cool NPM package.'
       ],

@@ -1,4 +1,4 @@
-const bsv = require('bsv')
+const bsv = require('babbage-bsv')
 const BabbageSDK = require('@babbage/sdk')
 
 /**
