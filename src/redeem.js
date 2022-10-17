@@ -65,13 +65,13 @@ module.exports = async ({
       bsv.crypto.Signature.SIGHASH_ANYONECANPAY
   }
   if (!key) {
-    const hashbuf = bsv.Transaction.sighash.sighashPreimage(
+    const hashbuf = bsv.crypto.Hash.sha256(bsv.Transaction.sighash.sighashPreimage(
       tx,
       sighashType,
       inputIndex,
       lockingScript,
       new bsv.crypto.BN(outputAmount)
-    )
+    ))
     signature = await BabbageSDK.createSignature({
       data: hashbuf,
       protocolID,
@@ -80,6 +80,7 @@ module.exports = async ({
       counterparty,
       privileged
     })
+    signature = bsv.crypto.Signature.fromBuffer(Buffer.from(signature))
     signature.nhashtype = sighashType
   } else {
     signature = bsv.Transaction.Sighash.sign(
