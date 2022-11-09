@@ -1,6 +1,6 @@
 {
   "name": "pushdrop",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "A package for creating and redeeming Bitcoin tokens with arbitrary signed payloads stored on the stack",
   "main": "src/index.js",
   "scripts": {
