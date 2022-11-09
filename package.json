@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/p2ppsr/pushdrop#readme",
   "dependencies": {
-    "@babbage/sdk": "^0.3.0",
+    "@babbage/sdk": "^0.4.11",
     "babbage-bsv": "^0.1.0"
   },
   "devDependencies": {
