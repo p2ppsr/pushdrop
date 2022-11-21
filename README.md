@@ -44,6 +44,8 @@ const unlocking_script = pushdrop.redeem({
     *   [Parameters](#parameters)
 *   [redeem](#redeem)
     *   [Parameters](#parameters-1)
+*   [decode](#decode)
+    *   [Parameters](#parameters-2)
 
 ### create
 
@@ -89,6 +91,21 @@ Redeems a PushDrop transaction output
     *   `obj.privileged`  
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Unlocking script that spends the PushDrop UTXO
+
+### decode
+
+Given a PushDrop locking script, returns the fields and lockingKey that were used to create it.
+
+If an invalid (non-PushDrop) script is provided, the return value is **undefined**. Only valid PushDrop scripts will be properly decoded.
+
+#### Parameters
+
+*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object
+
+    *   `obj.script` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The PushDrop locking script to decode
+    *   `obj.fieldFormat` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The format of the fields, either "hex", "base64", "utf8" or "buffer" (optional, default `hex`)
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The decoded object, containing `fields`, `signature` and `lockingPublicKey`
 
 ## License
 
