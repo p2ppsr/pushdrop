@@ -27,6 +27,11 @@ module.exports = ({ script, fieldFormat = 'hex' }) => {
       break
     }
     const chunk = parsedScript.chunks[i].buf
+    if (!chunk) {
+      if (parsedScript.chunks[i].opcodenum >= 80 && parsedScript.chunks[i].opcodenum <= 95) {
+        chunk = Buffer.from([parsedScript.chunks[i].opcodenum - 80])
+      }
+    }
     if (fieldFormat === 'buffer') {
       fields.push(chunk)
     } else {
