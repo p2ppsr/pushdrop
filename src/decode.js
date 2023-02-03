@@ -26,7 +26,7 @@ module.exports = ({ script, fieldFormat = 'hex' }) => {
       signature = parsedScript.chunks[i].buf.toString('hex')
       break
     }
-    const chunk = parsedScript.chunks[i].buf
+    let chunk = parsedScript.chunks[i].buf
     if (!chunk) {
       if (parsedScript.chunks[i].opcodenum >= 80 && parsedScript.chunks[i].opcodenum <= 95) {
         chunk = Buffer.from([parsedScript.chunks[i].opcodenum - 80])
