@@ -5,8 +5,8 @@ const OP_2DROP = 109
 
 /**
  * Given a PushDrop locking script, returns the fields and lockingKey that were used to create it.
- * 
- * If an invalid (non-PushDrop) script is provided, the return value is **undefined**. Only valid PushDrop scripts will be properly decoded. 
+ *
+ * If an invalid (non-PushDrop) script is provided, the return value is **undefined**. Only valid PushDrop scripts will be properly decoded.
  *
  * @param {Object} obj All parameters are given in an object
  * @param {String} obj.script The PushDrop locking script to decode
@@ -15,7 +15,8 @@ const OP_2DROP = 109
  * @returns {Object} The decoded object, containing `fields`, `signature` and `lockingPublicKey`
  */
 module.exports = ({ script, fieldFormat = 'hex' }) => {
-  const parsedScript = bsv.Script.fromHex(script)
+  // Note: bsv.Script.fromHex appears to have a bug in browser contexts.
+  const parsedScript = new bsv.Script(Buffer.from(script, 'hex'))
   const lockingPublicKey = parsedScript.chunks[0].buf.toString('hex')
   const fields = []
   let signature
