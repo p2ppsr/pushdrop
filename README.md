@@ -61,6 +61,7 @@ Creates a script that pays to a public key and includes "PUSH DROP" data signed 
     *   `obj.protocolID`  
     *   `obj.keyID`  
     *   `obj.counterparty`  
+    *   `obj.ownedByCreator`  
     *   `obj.privileged`  
     *   `obj.description`  
 
