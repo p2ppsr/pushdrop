@@ -17,13 +17,15 @@ const OP_2DROP = '6d'
  * @param {string} [args.description] Describe the high-level operation being performed, so that the user can make an informed decision if permission is needed.
  * @param {string} [args.counterparty=self] If specified, the user with this identity key will also be able to verify the signature, as long as they specify the current user's identity key as their counterparty. Must be a hexadecimal string representing a 33-byte or 65-byte value, "self" or "anyone".
  * @param {string} [args.privileged=false] This indicates whether the privileged keyring should be used for signing, as opposed to the primary keyring.
- * @param {Boolean} [args.ownedByCreator=false] Indicates whether the token is owned by its creator, assuming `protocolID` and `keyID` are being used.
+ * @param {Boolean} [args.counterpartyCanVerifyMyOwnership=false] Indicates whether the token is owned by its creator, assuming `protocolID` and `keyID` are being used.
+ * @param {Boolean} [args.ownedByCreator=false] DEPRECATED - use counterpartyCanVerifyMyOwnership. Retained for backward-compatibility
  *
  * @returns {String} A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
  */
 module.exports = async ({
-  fields, key, ownerKey, protocolID, keyID, counterparty, ownedByCreator, privileged, description
+  fields, key, ownerKey, protocolID, keyID, counterparty, ownedByCreator, counterpartyCanVerifyMyOwnership, privileged, description
 }) => {
+  ownedByCreator = counterpartyCanVerifyMyOwnership
   // Try to convert to BSV key structures
   if (typeof key === 'string') {
     key = bsv.PrivateKey.fromWIF(key)
