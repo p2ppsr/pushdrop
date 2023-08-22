@@ -16,7 +16,7 @@ const OP_2DROP = 109
  */
 module.exports = ({ script, fieldFormat = 'hex' }) => {
   try {
-    //Check for non-hexadecimal characters
+    // Check for non-hexadecimal characters
     const hexchars = /[^0-9A-Fa-f][^0-9A-Fa-f]/
 
     if (script.match(hexchars) === null) {
@@ -27,13 +27,13 @@ module.exports = ({ script, fieldFormat = 'hex' }) => {
       let signature
       for (let i = 2; i < parsedScript.chunks.length; i++) {
         const nextOpcode = parsedScript.chunks[i + 1].opcodenum
-      
+
         if (!nextOpcode || nextOpcode.length === 0) {
           const e = new Error('Must provide an OPCODE')
           e.code = 'ERR_INVALID_OPCODE'
           throw e
         }
-        
+
         // If the next value is DROP or 2DROP then this is the signature
         if (nextOpcode === OP_DROP || nextOpcode === OP_2DROP) {
           signature = parsedScript.chunks[i].buf.toString('hex')
@@ -46,13 +46,13 @@ module.exports = ({ script, fieldFormat = 'hex' }) => {
             chunk = Buffer.from([parsedScript.chunks[i].opcodenum - 80])
           }
         }
-  
+
         if (!fieldFormat || acceptedFormats.includes(fieldFormat) == false) {
           const e = new Error('Must provide a field format value')
           e.code = 'ERR_INVALID_FIELD_FORMAT'
           throw e
         }
-  
+
         if (fieldFormat === 'buffer') {
           fields.push(chunk)
         } else {

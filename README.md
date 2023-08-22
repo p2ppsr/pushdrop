@@ -20,12 +20,12 @@ const token_payload = [
   ...
 ]
 
-const pushdrop_script = pushdrop.create({
+const pushdrop_script = await pushdrop.create({
   fields: token_payload,
   key: bsv.PrivateKey.fromHex(key)
 })
 
-const unlocking_script = pushdrop.redeem({
+const unlocking_script = await pushdrop.redeem({
   prevTxId: txid,
   outputIndex: 0,
   outputAmount: amount,
@@ -58,15 +58,15 @@ Creates a script that pays to a public key and includes "PUSH DROP" data signed 
     *   `obj.fields` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<([Buffer](https://nodejs.org/api/buffer.html) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>** The token payload fields to push and drop. Each field is given as a Buffer, or a utf8 string.
     *   `obj.key` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | PrivateKey)** The private key that will sign the token payload. Given in WIF or an instance of bsv PrivateKey. If no key is provided, the BabbageSDK will be used as a signing strategy.
     *   `obj.ownerKey` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | PublicKey)?** The owner's public key, whose private key can unlock the token using the `redeem` function. If not provided, the signing key will be used. Given in DER (33- or 65-byte hex), or an instance of bsv1 PublicKey. If no signing private key is provided, the BabbageSDK will be used to derive the ownerKey.
-    *   `obj.protocolID`  
-    *   `obj.keyID`  
-    *   `obj.counterparty`  
-    *   `obj.ownedByCreator`  
-    *   `obj.counterpartyCanVerifyMyOwnership`  
-    *   `obj.privileged`  
-    *   `obj.description`  
+    *   `obj.protocolID` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Specify an identifier for the protocol under which this operation is being performed.
+    *   `obj.keyID` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** An identifier for the message being signed. During verification, or when retrieving the public key used, the same message ID will be required. This can be used to prevent key re-use, even when the same user is using the same protocol to sign multiple messages.
+    *   `obj.counterparty` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** If specified, the user with this identity key will also be able to verify the signature, as long as they specify the current user's identity key as their counterparty. Must be a hexadecimal string representing a 33-byte or 65-byte value, "self" or "anyone". (optional, default `self`)
+    *   `obj.ownedByCreator` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** DEPRECATED - use counterpartyCanVerifyMyOwnership. Retained for backward-compatibility (optional, default `false`)
+    *   `obj.counterpartyCanVerifyMyOwnership` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Indicates whether the token is owned by its creator, assuming `protocolID` and `keyID` are being used. (optional, default `false`)
+    *   `obj.privileged` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** This indicates whether the privileged keyring should be used for signing, as opposed to the primary keyring. (optional, default `false`)
+    *   `obj.description` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Describe the high-level operation being performed, so that the user can make an informed decision if permission is needed.
 
-Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
 
 ### redeem
 
@@ -81,18 +81,18 @@ Redeems a PushDrop transaction output
     *   `obj.lockingScript` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | bsv.Script)** The locking script of the output to redeem. Given as a hex string or an instance of bsv1 Script.
     *   `obj.outputAmount` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Number of satoshis in the PushDrop UTXO
     *   `obj.key` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | bsv.PrivateKey)** Private key that can unlock the PushDrop UTXO's P2PK lock. Given as a WIF string or an instance of bsv1 PrivateKey.
+    *   `obj.protocolID` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Specify an identifier for the protocol under which this operation is being performed.
+    *   `obj.keyID` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** An identifier for the message being signed. During verification, or when retrieving the public key used, the same message ID will be required. This can be used to prevent key re-use, even when the same user is using the same protocol to sign multiple messages.
+    *   `obj.description` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Describe the high-level operation being performed, so that the user can make an informed decision if permission is needed.
+    *   `obj.counterparty` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** If specified, the user with this identity key will also be able to verify the signature, as long as they specify the current user's identity key as their counterparty. Must be a hexadecimal string representing a 33-byte or 65-byte value, "self" or "anyone". (optional, default `self`)
+    *   `obj.privileged` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** This indicates whether the privileged keyring should be used for signing, as opposed to the primary keyring. (optional, default `false`)
     *   `obj.signSingleOutput` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** If provided, uses SIGHASH_SINGLE instead of SIGHASH_NONE. The input index must be the same as the output index of this output in the transaction.
 
         *   `obj.signSingleOutput.satoshis` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)?** Number of satoshis in the single output to sign
         *   `obj.signSingleOutput.script` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | bsv.Script)?** Output script of the single output to sign (this COULD be another PushDrop script created with the `create` function, allowing you to continue/spend/update the token). Given as a hex string or an instance of bsv1 Script.
     *   `obj.inputIndex` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** The input in the spending transaction that will unlock the PushDrop UTXO (optional, default `0`)
-    *   `obj.protocolID`  
-    *   `obj.keyID`  
-    *   `obj.description`  
-    *   `obj.counterparty`  
-    *   `obj.privileged`  
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Unlocking script that spends the PushDrop UTXO
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** Unlocking script that spends the PushDrop UTXO
 
 ### decode
 

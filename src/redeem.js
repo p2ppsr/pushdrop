@@ -10,16 +10,16 @@ const BabbageSDK = require('@babbage/sdk')
  * @param {string|bsv.Script} obj.lockingScript The locking script of the output to redeem. Given as a hex string or an instance of bsv1 Script.
  * @param {Number} obj.outputAmount Number of satoshis in the PushDrop UTXO
  * @param {string|bsv.PrivateKey} obj.key Private key that can unlock the PushDrop UTXO's P2PK lock. Given as a WIF string or an instance of bsv1 PrivateKey.
- * @param {string} args.protocolID Specify an identifier for the protocol under which this operation is being performed.
- * @param {string} args.keyID An identifier for the message being signed. During verification, or when retrieving the public key used, the same message ID will be required. This can be used to prevent key re-use, even when the same user is using the same protocol to sign multiple messages.
- * @param {string} [args.description] Describe the high-level operation being performed, so that the user can make an informed decision if permission is needed.
- * @param {string} [args.counterparty=self] If specified, the user with this identity key will also be able to verify the signature, as long as they specify the current user's identity key as their counterparty. Must be a hexadecimal string representing a 33-byte or 65-byte value, "self" or "anyone".
- * @param {string} [args.privileged=false] This indicates whether the privileged keyring should be used for signing, as opposed to the primary keyring.
+ * @param {string} obj.protocolID Specify an identifier for the protocol under which this operation is being performed.
+ * @param {string} obj.keyID An identifier for the message being signed. During verification, or when retrieving the public key used, the same message ID will be required. This can be used to prevent key re-use, even when the same user is using the same protocol to sign multiple messages.
+ * @param {string} [obj.description] Describe the high-level operation being performed, so that the user can make an informed decision if permission is needed.
+ * @param {string} [obj.counterparty=self] If specified, the user with this identity key will also be able to verify the signature, as long as they specify the current user's identity key as their counterparty. Must be a hexadecimal string representing a 33-byte or 65-byte value, "self" or "anyone".
+ * @param {string} [obj.privileged=false] This indicates whether the privileged keyring should be used for signing, as opposed to the primary keyring.
  * @param {Object} [obj.signSingleOutput] If provided, uses SIGHASH_SINGLE instead of SIGHASH_NONE. The input index must be the same as the output index of this output in the transaction.
  * @param {Number} [obj.signSingleOutput.satoshis] Number of satoshis in the single output to sign
  * @param {string|bsv.Script} [obj.signSingleOutput.script] Output script of the single output to sign (this COULD be another PushDrop script created with the `create` function, allowing you to continue/spend/update the token). Given as a hex string or an instance of bsv1 Script.
  * @param {Number} obj.inputIndex The input in the spending transaction that will unlock the PushDrop UTXO
- * @returns {string} Unlocking script that spends the PushDrop UTXO
+ * @returns {Promise<string>} Unlocking script that spends the PushDrop UTXO
  */
 module.exports = async ({
   prevTxId,
