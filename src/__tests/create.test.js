@@ -61,6 +61,78 @@ describe('create', () => {
       '4104c9d0ddc86380f42c2126e1b71d1006495a1d952189e42b65b087c98286d14182c27b3dba5feb2bce841aef8d88295e6bf5a0be36734874ec72fac4161c021c31ac06deadbeef20200b68656c6c6f20776f726c640f546869732069732061206669656c641c6865726520636f6d6573206669656c64206e756d62657220666f7572136669656c6420352069732061206275666665720051525f604f06deadbeef202246304402204c591eedb0fa6c228482a29872ec09a9279c10cfa3d1c28f186366d8c7996c4a0220225c70ec8bb934db1a42b3852736288eea1930bf0266d9c9ea0f7bf27ad43e6f6d6d6d6d6d6d75'
     )
   })
+  it('Works with the lock after the push drop', async () => {
+    const result = await create({
+      fields: [
+        Buffer.from('deadbeef2020', 'hex'),
+        'hello world',
+        'This is a field',
+        'here comes field number four',
+        Buffer.from('field 5 is a buffer', 'utf8'),
+        Buffer.from('00', 'hex'),
+        Buffer.from('01', 'hex'),
+        Buffer.from('02', 'hex'),
+        Buffer.from('0f', 'hex'),
+        Buffer.from('10', 'hex'),
+        Buffer.from('81', 'hex'),
+        Buffer.from('deadbeef2022', 'hex')
+      ],
+      key: someRandomKeypair.key,
+      lockBefore: false
+    })
+    expect(result).toEqual(
+      '06deadbeef20200b68656c6c6f20776f726c640f546869732069732061206669656c641c6865726520636f6d6573206669656c64206e756d62657220666f7572136669656c6420352069732061206275666665720051525f604f06deadbeef202246304402204c591eedb0fa6c228482a29872ec09a9279c10cfa3d1c28f186366d8c7996c4a0220225c70ec8bb934db1a42b3852736288eea1930bf0266d9c9ea0f7bf27ad43e6f6d6d6d6d6d6d754104c9d0ddc86380f42c2126e1b71d1006495a1d952189e42b65b087c98286d14182c27b3dba5feb2bce841aef8d88295e6bf5a0be36734874ec72fac4161c021c31ac'
+    )
+  })
+  it('Works with no signature', async () => {
+    const result = await create({
+      fields: [
+        Buffer.from('deadbeef2022', 'hex')
+      ],
+      key: someRandomKeypair.key,
+      disableSignature: true
+    })
+    expect(result).toEqual(
+      '4104c9d0ddc86380f42c2126e1b71d1006495a1d952189e42b65b087c98286d14182c27b3dba5feb2bce841aef8d88295e6bf5a0be36734874ec72fac4161c021c31ac06deadbeef202275'
+    )
+  })
+  it('Works with a custom lock', async () => {
+    const result = await create({
+      fields: [
+        Buffer.from('deadbeef2022', 'hex')
+      ],
+      key: someRandomKeypair.key,
+      customLock: 'aaaaaaaabbbbbbbb'
+    })
+    expect(result).toEqual(
+      'aaaaaaaabbbbbbbb06deadbeef2022463044022065b88043757e46f40d73b1ba48bc8c5d7886576e7ade42d0e56e1d88b0011e6c022007f61bc0739c3a0c377538dcb41193163fd69e7e999b907f75f769cff277e65d6d'
+    )
+  })
+  it('Works with a custom lock and no signature', async () => {
+    const result = await create({
+      fields: [
+        Buffer.from('deadbeef2022', 'hex')
+      ],
+      disableSignature: true,
+      customLock: 'aaaaaaaabbbbbbbb'
+    })
+    expect(result).toEqual(
+      'aaaaaaaabbbbbbbb06deadbeef202275'
+    )
+  })
+  it('Works with a custom lock, no signature, and the push drop before the lock', async () => {
+    const result = await create({
+      fields: [
+        Buffer.from('deadbeef2022', 'hex')
+      ],
+      disableSignature: true,
+      lockBefore: false,
+      customLock: 'aaaaaaaabbbbbbbb'
+    })
+    expect(result).toEqual(
+      '06deadbeef202275aaaaaaaabbbbbbbb'
+    )
+  })
   it('Works with data larger than 256 bytes data', async () => {
     const result = await create({
       fields: [

@@ -53,7 +53,7 @@ Creates a script that pays to a public key and includes "PUSH DROP" data signed 
 
 #### Parameters
 
-*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object
+*   `obj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** All parameters are given in an object (optional, default `{}`)
 
     *   `obj.fields` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<([Buffer](https://nodejs.org/api/buffer.html) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))>** The token payload fields to push and drop. Each field is given as a Buffer, or a utf8 string.
     *   `obj.key` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | PrivateKey)** The private key that will sign the token payload. Given in WIF or an instance of bsv PrivateKey. If no key is provided, the BabbageSDK will be used as a signing strategy.
@@ -65,6 +65,9 @@ Creates a script that pays to a public key and includes "PUSH DROP" data signed 
     *   `obj.counterpartyCanVerifyMyOwnership` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Indicates whether the token is owned by its creator, assuming `protocolID` and `keyID` are being used. (optional, default `false`)
     *   `obj.privileged` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** This indicates whether the privileged keyring should be used for signing, as opposed to the primary keyring. (optional, default `false`)
     *   `obj.description` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Describe the high-level operation being performed, so that the user can make an informed decision if permission is needed.
+    *   `obj.disableSignature` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** If provided, no signature will be applied to the PushDrop token payload.
+    *   `obj.lockBefore` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** If set to false, the lock will be after the push and drop parts of the script. (optional, default `true`)
+    *   `obj.customLock` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** If provided, the lock portion of the script will be set to this custom value, and the normal P2PK lock will not be used.
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** A Bitcoin script hex string containing a P2PK lock and the PUSH DROP data, with a signature over the fields
 
