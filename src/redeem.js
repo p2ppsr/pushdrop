@@ -36,7 +36,7 @@ module.exports = async ({
   inputIndex = 0
 }) => {
   if (typeof lockingScript === 'string') {
-    lockingScript = bsv.Script.fromHex(lockingScript)
+    lockingScript = bsv.Script.fromBuffer(Buffer.from(lockingScript, 'hex'))
   }
   if (typeof key === 'string') {
     key = bsv.PrivateKey.fromWIF(key)
