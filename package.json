@@ -37,7 +37,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@babbage/sdk": "^0.4.45",
+    "@babbage/sdk": "^0.4.46",
     "babbage-bsv": "^0.2.4"
   }
 }
