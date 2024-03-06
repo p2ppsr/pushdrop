@@ -28,7 +28,7 @@ module.exports = {
   //   ]
   // },
   externals: {
-    // '@babbage/sdk': '@babbage/sdk'
+    // '@babbage/sdk-ts': '@babbage/sdk-ts'
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],

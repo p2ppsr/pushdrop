@@ -1,6 +1,6 @@
 const bsv = require('babbage-bsv')
 const minimalEncoding = require('./utils/minimalEncoding')
-const BabbageSDK = require('@babbage/sdk')
+const BabbageSDK = require('@babbage/sdk-ts')
 
 const OP_DROP = '75'
 const OP_2DROP = '6d'

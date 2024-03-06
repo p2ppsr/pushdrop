@@ -1,5 +1,5 @@
 const bsv = require('babbage-bsv')
-const BabbageSDK = require('@babbage/sdk')
+const BabbageSDK = require('@babbage/sdk-ts')
 
 /**
  * Redeems a PushDrop transaction output
